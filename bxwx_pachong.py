@@ -21,13 +21,15 @@ def fxurl(html):
 	soup=BeautifulSoup(html,'html.parser')
 	#重点！！！
 	#转换为bs型数据，添加解析器！！！！
-	lj=soup.find(id='pt_next')
+	j=soup.find_all(class_="p3")
+	ll=j[0]
 	#重点,查找id=pt_next的元素(下一页url)
 	#.find(属性=参数)搜索单一元素
-	l=lj.get('href')
+	lj=ll.find("a")
+	l=lj.get("href")
 	#获得下一页的部分链接
 	#元素.get(属性)返回参数
-	url='https://m.bxwx9.org'+l
+	url='http://m.bxwz9.org'+l
 	#组成完整url
 	return url
 	#返回url
@@ -39,9 +41,9 @@ def fxtext(html):
 	soup=BeautifulSoup(html,'html.parser')
 	#重点！！！
 	#转换为bs型数据，添加解析器！！！
-	bt=soup.find(id='nr_title')
+	bt=soup.find(id='chaptertitle')
 	#查找id=nr_title的元素(标题)
-	nr=soup.find(id='nr1')
+	nr=soup.find(id='novelcontent')
 	#查找id=nr1的元素(内容)
 	a=bt.text
 	#标题传入a
@@ -75,17 +77,20 @@ if __name__=='__main__':#main函数
 	for i in range(1000000):
 		try:
 			html=rqe(url1)
+			print(html)
 			#获取html
 			bt,nr=fxtext(html)
+			print(2)
 			#获取内容，标题
 			write(bt,nr,src)
 			#写入文件
 			print('正在写入\n'+bt)
-		
 			url2=fxurl(html)
+			print(3)
+			print(url2)
 			#获取下页的url
 			url1=url2
 			#将下页url传入起始url
 		except AttributeError:
 			break
-print('\n\n全部写入完成')
+	print('\n\n全部写入完成')
